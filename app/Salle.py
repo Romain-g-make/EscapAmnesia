@@ -13,4 +13,3 @@ class Salle:
             self.etat = "fini"
         else:
             print("Ce n'est pas ça...")
-
