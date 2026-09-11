@@ -16,7 +16,7 @@ def start():
     game = SessionManager(1,"en_jeu",60,1)
     return {"status": "ok", "message": mess}
 
-@app.get("/get-data-room")
+@app.get("/room/get")
 def get_data_room():
     return game.get_data()
 
@@ -32,3 +32,15 @@ def removeItem(itemId: int):
 @app.get("/inventory/showInventory")
 def showInventory():
     return {"Affichage": 'Affichage des items de l\'inventaire.'}
+
+@app.get('/objet/get')
+def getObj():
+    return game.get_obj()
+
+@app.get('/indice')
+def getInd():
+    return game.get_hint()
+
+@app.get('/tryescape/{code}')
+def tryEscape(code:int):
+    return game.levelChange(code)
