@@ -15,3 +15,7 @@ def start():
     global game
     game = SessionManager(1,"en_jeu",60,1)
     return {"status": "ok", "message": mess}
+
+@app.get("/get-data-room/{room_id}")
+def get_data_room(room_id:int):
+    
