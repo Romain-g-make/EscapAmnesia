@@ -19,5 +19,5 @@ class Item():
     def utiliser(self):
         return print(f'Vout utilisez actuellement l\'item : {self.nom} !')
 
-    def allItems(self):
-        return self.listItem
+    def getData(self):
+        return {"id":self.id,"nom":self.nom,"description":self.description}
