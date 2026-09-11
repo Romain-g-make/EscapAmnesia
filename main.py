@@ -4,7 +4,7 @@ from pydantic import BaseModel
 players = [
     {
         "id": 1,
-        "name": "Alice",
+        "name": "Alice",.0
         "score": 1200,
         "level": 12,
     },
