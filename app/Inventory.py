@@ -2,6 +2,7 @@ from Item import Item
 
 class Inventory(Item):
     inventory = {};
+    
     def __init__(self, maxSlots):
         self.maxSlots = maxSlots
 
