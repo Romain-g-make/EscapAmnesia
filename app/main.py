@@ -18,4 +18,4 @@ def start():
 
 @app.get("/get-data-room/{room_id}")
 def get_data_room(room_id:int):
-    
+    return game.get_data()
