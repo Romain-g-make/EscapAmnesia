@@ -10,7 +10,10 @@ class Inventory(Item):
         return self.inventory[itemId]
 
     def addItem(self, itemId, quantity):
-        self.inventory[itemId] = quantity
+        if self.hasItem:
+            self.inventory[itemId] += quantity
+        else:
+            self.inventory[itemId] = quantity
 
     def removeItem(self, itemId, quantity):
         if self.hasItem(itemId):
