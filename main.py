@@ -4,6 +4,7 @@ app = FastAPI(title="Api de l'inventaire")
 
 @app.patch("/inventory/addItem/{itemId}")
 def addItem(itemId: int):
+    
     return {"Ajout": 'Item {itemId} ajouté à l\'inventaire'}
 
 @app.patch("/inventory/removeItem/{itemId}")
