@@ -1,19 +1,24 @@
 from .Item import Item
 
 class ObjetInteractif(Item):
-    def __init__(self, id,nom,description,etat,estFerme, codeSerrure):
+    def __init__(self, id,nom,description,etat,useEffect,objs : list[Item] = None):
         self.id = id
         self.nom = nom
         self.description = description
         self.etat = etat
-        self.estFerme = estFerme
-        self.codeSerrure = codeSerrure
+        self.objs = objs
+        self.useEffect = useEffect
 
     def inspecter(self):
-        return print(f'Voici l\item : {self.nom}, il sert à : {self.description} !')
+        result = {"description":self.description}
+        if self.objs:
+            for i in range (len(self.objs)):
+                result[self.objs[i].id]=self.objs[i].getData()
+        return result
 
     def utiliser(self):
-        return print(f'Vout utilisez actuellement l\'item : {self.nom} !')
+        return {"effet":self.useEffect}
 
-    def deverouiller(self):
-        return print(f'Vous êtes actuellement entrain de déverouiller l\'objet !')
+
+    def getData(self):
+        return {"id":self.id,"nom":self.nom,"description":self.description}

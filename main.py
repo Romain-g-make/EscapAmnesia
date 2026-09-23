@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi import FastAPI
 from app.SessionManager import SessionManager
 from app.Inventory import Inventory
 
