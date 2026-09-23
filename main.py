@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi import FastAPI
-from app import SessionManager
+from app.SessionManager import SessionManager
+from app.Inventory import Inventory
 
 app = FastAPI(title="EscapeEngine API Test")
+inventaire = Inventory(10)
 
 
 @app.get("/")
@@ -24,15 +26,15 @@ def get_data_room():
 
 @app.patch("/inventory/addItem/{itemId}")
 def addItem(itemId: int):
-    return {"Ajout": 'Item {itemId} ajouté à l\'inventaire'}
+    return inventaire.addItem(itemId)
 
 @app.patch("/inventory/removeItem/{itemId}")
 def removeItem(itemId: int):
-    return {"Retrait": 'Item {itemId} retiré de l\'inventaire'}
+    return inventaire.removeItem(itemId)
 
 @app.get("/inventory/showInventory")
 def showInventory():
-    return {"Affichage": 'Affichage des items de l\'inventaire.'}
+    return inventaire.showInventory()
 
 @app.get('/objet/get')
 def getObj():
@@ -46,15 +48,3 @@ def getInd():
 def tryEscape(code:int):
     return game.levelChange(code)
 
-@app.patch("/inventory/addItem/{itemId}")
-def addItem(itemId: int):
-    
-    return {"Ajout": 'Item {itemId} ajouté à l\'inventaire'}
-
-@app.patch("/inventory/removeItem/{itemId}")
-def removeItem(itemId: int):
-    return {"Retrait": 'Item {itemId} retiré de l\'inventaire'}
-
-@app.get("/inventory/showInventory")
-def showInventory():
-    return {"Affichage": 'Affichage des items de l\'inventaire.'}

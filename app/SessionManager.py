@@ -1,6 +1,6 @@
 import datetime
-from Salle import Salle
-from ItemsList import (
+from .Salle import Salle
+from .ItemsList import (
     injecteur_uv, coffre_quantique, partition_holoclavier, oculometre, porte_chambre,
     drone_maintenance, pile_lithium, puce_dechiffrement, terminal_decharge, sas_rez_de_chaussee,
     analyseur_neuro_trauma, module_bypass, bande_donnees
