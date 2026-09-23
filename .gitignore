@@ -5,3 +5,7 @@ __pycache__/
 *.db
 *.log
 .gm_session
+
+.venv/
+venv/
+tmp_env/
