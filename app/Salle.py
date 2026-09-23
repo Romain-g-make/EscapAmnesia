@@ -21,16 +21,17 @@ class Salle:
     def tryEscape(self,codeP):
         if codeP==self.exitCode:
             self.state = "fini"
+            return True
         else:
-            return {"Ce n'est pas ça..."}
+            return False
 
     def getInfo(self):
         return{"id":self.id,"name":self.name,"state":self.state,"scenario":self.scenario}
 
-    def getIndice(self):
+    def getHint(self):
         return {"indice":self.indice}
 
-    def getObjets(self):
+    def getObjects(self):
         result = []
         for objet in self.listObj:
             result.append(objet.getData())

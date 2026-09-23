@@ -34,11 +34,29 @@ class SessionManager:
                 self.niveauActuel = self.salle4
 
 
-    def terminerPartie(self,v:bool):
+    def endGame(self,v:bool):
         v & print("Bravo vous avez gagnez en : ",datetime.date.today()-self.dateDebut)
 
-    def changerNiveau(self,niveau:Salle,newNiv:Salle):
-        niveau.etat = "fini"
+    def levelChange(self,code : int):
+        if(self.niveauActuel.tryEscape(code)):
+            self.niveauActuel = self.nextLevel(self.niveauActuel)
+            return {"status" : "true"}
+        return {"status" : "false"}
+
+    def nextLevel(self):
+        match self.niveauActuel:
+            case self.salle1:
+                return self.salle2
+            case self.salle2:
+                return self.salle3
+            case self.salle3:
+                return self.salle4
 
     def get_data(self):
         return self.niveauActuel.getInfo()
+
+    def get_obj(self):
+        return self.niveauActuel.getObjects()
+
+    def get_hint(self):
+        return self.niveauActuel.getHint()
