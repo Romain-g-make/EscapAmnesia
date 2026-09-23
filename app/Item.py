@@ -14,7 +14,7 @@ class Item():
     listItem.append(id)
 
     def inspecter(self):
-        return print(f'Voici l\item : {self.nom}, il sert à : {self.description} !')
+        return {"description":self.description}
 
     def utiliser(self):
         return print(f'Vout utilisez actuellement l\'item : {self.nom} !')

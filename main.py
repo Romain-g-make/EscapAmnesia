@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from app import SessionManager
+from app.SessionManager import SessionManager
+from app.Inventory import Inventory
 
 app = FastAPI(title="EscapeEngine API Test")
 inventaire = Inventory(10)
