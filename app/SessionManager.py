@@ -1,16 +1,81 @@
 import datetime
 from Salle import Salle
+from ItemsList import (
+    injecteur_uv, coffre_quantique, partition_holoclavier, oculometre, porte_chambre,
+    drone_maintenance, pile_lithium, puce_dechiffrement, terminal_decharge, sas_rez_de_chaussee,
+    analyseur_neuro_trauma, module_bypass, bande_donnees
+)
 
 class SessionManager:
 
-    scenar1 = "Tu viens de te réveiller, seul, dans une chambre que tu ne connais pas.\n Autour de toi des lumières vives, une petite photo de famille orne le meuble de télé,\n un homme brun, yeux marrons avec des tâches de rousseurs, par la fenêtre des grattes ciels sombres,\n et une petite musique de jazz vient des voisins."
-    scenar2 = "Enfin sorti, l'immeuble s'ouvre à toi, rien d'intéressant donc tu files au rez de chaussé\n. La porte est aussi fermé de l'intérieur, verrouillé par un code à 5 chiffre."
-    scenar3 = "Débarasser de cet enfer, tu est libre et.\n !! BAM !! \nUne voiture, un homme à terre, un accident stupide mais te voilà dans le coma.\n Par chance ton corps possède une sauvegarde de ta conscience, mais pour la restaurer il faut trouver..."
-    scenar4 = "Te voilà debout, le médecin vient te voir : \"Bonjour Etsilon, comment vas-tu ?\" \nTu ne sais pas, à vrai dire tu ne te souvenais pas de ton prénom, peut être que l'accident t'as chamboulé ?\n La chambre est quasi vide, un miroir, ton lit, une commode, des toilettes et une vue sur la place central."
-    salle1 = Salle(1,"Chambre","en_jeu",scenar1,[],"indice1",7635)
-    salle2 = Salle(1,"Immeuble","en_jeu",scenar2,[],"indice2",84693)
-    salle3 = Salle(1,"Accident","en_jeu",scenar3,[],"indice3",101)
-    salle4 = Salle(1,"Hôpital","en_jeu",scenar4,[],"indice4",-1)
+    scenar1 = (
+        "ZONE 1 - LA CHAMBRE (CONFINEMENT INITIAL)\n"
+        "Tu te réveilles, seul, dans une chambre inconnue. Des grattes-ciels sombres sont visibles par la fenêtre.\n"
+        "Pour sortir, tu dois déverrouiller la porte de la chambre via son digicode."
+    )
+
+    scenar2 = (
+        "ZONE 2 - L'IMMEUBLE (ESCALIER & COULOIR)\n"
+        "Tu accèdes aux parties communes. La sortie au rez-de-chaussée est verrouillée par le Sas.\n"
+        "Tu dois réalimenter et configurer le Terminal de Décharge mural pour ouvrir la porte."
+    )
+    
+    scenar3 = (
+        "ZONE 3 - L'ACCIDENT / LA SAUVEGARDE (ESPACE NEURO-VIRTUEL)\n"
+        "Un accident survient ! Ton corps bascule dans le coma. Une sauvegarde de ta conscience est active.\n"
+        "Restaure ta séquence cérébrale en configurant les signaux d'ondes sur l'Analyseur."
+    )
+    
+    scenar4 = (
+        "ZONE 4 - L'HÔPITAL (RÉVEIL FINAL)\n"
+        "« Bonjour Etsilon, comment vas-tu ? » La séquence de réalignement est terminée.\n"
+        "Tu es tiré d'affaire, la simulation prend fin."
+    )
+
+    indice1 = "Révèle le schéma du scanner avec la lumière UV, puis associe la partition d'holoclavier à l'oculomètre[cite: 1]."
+    indice2 = "Trouve la pile '84' dans le drone et la puce '693' dans l'ascenseur pour alimenter le terminal mural[cite: 1]."
+    indice3 = "Insère la bande de données dans l'analyseur pour lire les signaux A, B, C et aligne les 3 interrupteurs[cite: 1]."
+    indice4 = "Séquence terminée[cite: 1]."
+
+    salle1 = Salle(
+        id=1,
+        name="Chambre",
+        state="en_jeu",
+        scenario=scenar1,
+        indice=indice1,
+        listObj=[injecteur_uv, coffre_quantique, partition_holoclavier, oculometre, porte_chambre],
+        exitCode="7635"
+    )
+
+    salle2 = Salle(
+        id=2,
+        name="Immeuble",
+        state="en_jeu",
+        scenario=scenar2,
+        indice=indice2,
+        listObj=[drone_maintenance, pile_lithium, puce_dechiffrement, terminal_decharge, sas_rez_de_chaussee],
+        exitCode="84693"
+    )
+
+    salle3 = Salle(
+        id=3,
+        name="Accident / Sauvegarde",
+        state="en_jeu",
+        scenario=scenar3,
+        indice=indice3,
+        listObj=[analyseur_neuro_trauma, module_bypass, bande_donnees],
+        exitCode="101"
+    )
+
+    salle4 = Salle(
+        id=4,
+        name="Hôpital",
+        state="en_jeu",
+        scenario=scenar4,
+        indice=indice4,
+        listObj=[],
+        exitCode=""
+    )
 
     idSession : int
     etat : str
@@ -18,11 +83,12 @@ class SessionManager:
     tempsRestant : int
     niveauActuel : Salle
     
-    def __init__(self,idSession,etat,tempsRestant,niveauActuel):
+    def __init__(self, idSession, etat, tempsRestant, niveauActuel):
         self.idSession = idSession
         self.etat = etat
         self.dateDebut = datetime.date.today()
         self.tempsRestant = tempsRestant
+        
         match niveauActuel:
             case 1:
                 self.niveauActuel = self.salle1
@@ -33,15 +99,15 @@ class SessionManager:
             case 4:
                 self.niveauActuel = self.salle4
 
+    def endGame(self, v: bool):
+        if v:
+            print("Bravo vous avez gagné en : ", datetime.date.today() - self.dateDebut)
 
-    def endGame(self,v:bool):
-        v & print("Bravo vous avez gagnez en : ",datetime.date.today()-self.dateDebut)
-
-    def levelChange(self,code : int):
-        if(self.niveauActuel.tryEscape(code)):
-            self.niveauActuel = self.nextLevel(self.niveauActuel)
-            return {"status" : "true"}
-        return {"status" : "false"}
+    def levelChange(self, code: str):
+        if self.niveauActuel.tryEscape(code):
+            self.niveauActuel = self.nextLevel()
+            return {"status": "true"}
+        return {"status": "false"}
 
     def nextLevel(self):
         match self.niveauActuel:
@@ -50,6 +116,8 @@ class SessionManager:
             case self.salle2:
                 return self.salle3
             case self.salle3:
+                return self.salle4
+            case _:
                 return self.salle4
 
     def get_data(self):
