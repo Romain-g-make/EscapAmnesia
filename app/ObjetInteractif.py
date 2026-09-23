@@ -1,7 +1,11 @@
-
+from .Item import Item
 
 class ObjetInteractif(Item):
-    def __init__(self, estFerme, codeSerrure):
+    def __init__(self, id,nom,description,etat,estFerme, codeSerrure):
+        self.id = id
+        self.nom = nom
+        self.description = description
+        self.etat = etat
         self.estFerme = estFerme
         self.codeSerrure = codeSerrure
 

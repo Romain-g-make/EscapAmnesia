@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app import SessionManager
 
 app = FastAPI(title="EscapeEngine API Test")
+inventaire = Inventory(10)
 
 @app.get("/")
 def read_root():
@@ -21,15 +22,15 @@ def get_data_room():
 
 @app.patch("/inventory/addItem/{itemId}")
 def addItem(itemId: int):
-    return {"Ajout": 'Item {itemId} ajouté à l\'inventaire'}
+    return inventaire.addItem(itemId)
 
 @app.patch("/inventory/removeItem/{itemId}")
 def removeItem(itemId: int):
-    return {"Retrait": 'Item {itemId} retiré de l\'inventaire'}
+    return inventaire.removeItem(itemId)
 
 @app.get("/inventory/showInventory")
 def showInventory():
-    return {"Affichage": 'Affichage des items de l\'inventaire.'}
+    return inventaire.showInventory()
 
 @app.get('/objet/get')
 def getObj():

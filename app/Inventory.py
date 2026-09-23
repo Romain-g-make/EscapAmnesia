@@ -1,7 +1,7 @@
-from Item import Item
+from .Item import Item
 
 class Inventory(Item):
-    inventory = {};
+    inventory = {}
     
     def __init__(self: object, maxSlots: int):
         self.maxSlots = maxSlots
@@ -11,18 +11,20 @@ class Inventory(Item):
 
     def addItem(self: object, itemId: int, quantity: int):
         if self.hasItem:
-            self.inventory[itemId] += quantity
+            self.inventory[key] += 1
         else:
-            self.inventory[itemId] = quantity
+            self.inventory[key] = 1
+        return {"status":"ok"}
 
     def removeItem(self: object, itemId: int, quantity):
         if self.hasItem(itemId):
             if self.inventory[itemId] - quantity == 0:
                 self.inventory.pop(itemId)
             else:
-                self.inventory[itemId] = self.inventory[itemId] - quantity
+                self.inventory[key] = self.inventory[key] - quantity
+            return {"status":"ok"}
         else:
-            print(f'Vous ne possédez pas l\'item !')
+            return {"status":"error","cause":"Object isn't in inventory"}
 
     def showInventory(self: object):
         print(f'Voici la liste de vos items :\n')
