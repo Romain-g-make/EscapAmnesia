@@ -1,9 +1,7 @@
 from fastapi import FastAPI
-from fastapi import FastAPI
 from app import SessionManager
 
 app = FastAPI(title="EscapeEngine API Test")
-
 
 @app.get("/")
 def read_root():
@@ -20,7 +18,6 @@ def start():
 @app.get("/room/get")
 def get_data_room():
     return game.get_data()
-
 
 @app.patch("/inventory/addItem/{itemId}")
 def addItem(itemId: int):
@@ -48,7 +45,6 @@ def tryEscape(code:int):
 
 @app.patch("/inventory/addItem/{itemId}")
 def addItem(itemId: int):
-    
     return {"Ajout": 'Item {itemId} ajouté à l\'inventaire'}
 
 @app.patch("/inventory/removeItem/{itemId}")
