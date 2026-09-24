@@ -1,5 +1,6 @@
 import datetime
 from .Salle import Salle
+from .Inventory import Inventory
 from .ItemsList import (
     injecteur_uv, coffre_quantique, partition_holoclavier, oculometre, porte_chambre,
     drone_maintenance, pile_lithium, puce_dechiffrement, terminal_decharge, sas_rez_de_chaussee,
@@ -83,11 +84,11 @@ class SessionManager:
     tempsRestant : int
     niveauActuel : Salle
     
-    def __init__(self, idSession, etat, tempsRestant, niveauActuel):
-        self.idSession = idSession
+    def __init__(self, etat, tempsRestant, niveauActuel,inventory : Inventory):
         self.etat = etat
         self.dateDebut = datetime.date.today()
         self.tempsRestant = tempsRestant
+        self.inventory = inventory
         
         match niveauActuel:
             case 1:
@@ -128,3 +129,6 @@ class SessionManager:
 
     def get_hint(self):
         return self.niveauActuel.getHint()
+
+    def get_objects(self):
+        return self.niveauActuel.listObj

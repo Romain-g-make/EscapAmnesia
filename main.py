@@ -1,8 +1,18 @@
 from fastapi import FastAPI
-from app import SessionManager
+import uuid
+from app.SessionManager import SessionManager
+from app.Inventory import Inventory
+from app.ObjetInteractif import ObjetInteractif
+from pydantic import BaseModel
+
+class SessionManagerCreate(BaseModel):
+    etat : str
+    temps_restant : int
+    niveau_actuel : int
+
 
 app = FastAPI(title="EscapeEngine API Test")
-inventaire = Inventory(10)
+games = {}
 
 @app.get("/")
 def read_root():
@@ -11,46 +21,93 @@ def read_root():
 @app.get("/start")
 def start():
     mess = ""
-    global game
-    game = SessionManager(1,"en_jeu",60,1)
-    return {"status": "ok", "message": mess}
+    uuid = str(uuid.uuid4())
+    inventaire = Inventory(10)
+    game = SessionManager(
+        inventory = inventaire,
+        **session.modeldump(),
+        
+    )
+    games[uuid]=game
+    return {"status": "ok", "message": mess,"id":uuid}
 
-@app.get("/room/get")
-def get_data_room():
-    return game.get_data()
+@app.delete("/{idGame}")
+def deleteGame(idGame:str):
+    if idGame in games:
+        del games[idGame]
+        return {"status":"ok"}
 
-@app.patch("/inventory/addItem/{itemId}")
-def addItem(itemId: int):
-    return inventaire.addItem(itemId)
 
-@app.patch("/inventory/removeItem/{itemId}")
-def removeItem(itemId: int):
-    return inventaire.removeItem(itemId)
 
-@app.get("/inventory/showInventory")
-def showInventory():
-    return inventaire.showInventory()
 
-@app.get('/objet/get')
-def getObj():
-    return game.get_obj()
+#GESTION SALLE
+@app.get("/{idGame}/room/get")
+def get_data_room(idGame:str):
+    if idGame in games:
+        return games[idGame].get_data()
+    return {"status":"error","message":"Wrong room id"}
 
-@app.get('/indice')
-def getInd():
-    return game.get_hint()
+@app.get('/{idGame}/indice')
+def getInd(idGame:str):
+    if idGame in games:
+        return games[idGame].get_hint()
+    return {"status":"error","message":"Wrong room id"}
+    
 
-@app.get('/tryescape/{code}')
-def tryEscape(code:int):
-    return game.levelChange(code)
+@app.patch('/{idGame}/tryescape/{code}')
+def tryEscape(idGame:str,code:int):
+    if idGame in games:
+        return games[idGame].levelChange(code)
+    return {"status":"error","message":"Wrong room id"}
 
-@app.patch("/inventory/addItem/{itemId}")
-def addItem(itemId: int):
-    return {"Ajout": 'Item {itemId} ajouté à l\'inventaire'}
 
-@app.patch("/inventory/removeItem/{itemId}")
-def removeItem(itemId: int):
-    return {"Retrait": 'Item {itemId} retiré de l\'inventaire'}
 
-@app.get("/inventory/showInventory")
-def showInventory():
-    return {"Affichage": 'Affichage des items de l\'inventaire.'}
+
+#GESTION INVENTAIRE
+@app.patch("/{idGame}/inventory/addItem/{itemId}")
+def addItem(idGame:str,itemId: int):
+    if idGame in games:
+        return games[idGame].inventory.addItem(itemId)
+    return {"status":"error","message":"Wrong room id"}
+
+@app.patch("/{idGame}/inventory/removeItem/{itemId}")
+def removeItem(idGame:str,itemId: int):
+    if idGame in games:
+        return games[idGame].inventory.removeItem(itemId)
+    return {"status":"error","message":"Wrong room id"}
+
+@app.get("/{idGame}/inventory/showInventory")
+def showInventory(idGame:str):
+    if idGame in games:
+        return games[idGame].inventory.showInventory()
+    return {"status":"error","message":"Wrong room id"}
+
+
+
+
+#OBJETS 
+@app.get('/{idGame}/objet/get')
+def getObj(idGame:str):
+    if idGame in games:
+        return games[idGame].get_obj()
+    return {"status":"error","message":"Wrong room id"}
+
+@app.get('/{idGame}/objet/inspect/{itemId}')
+def getInspect(idGame:str,itemId:int):
+    if idGame in games:
+        for item in games[idGame].get_objects():
+            if item.id == itemId:
+                return item.inspecter()
+        return {"status":"error","message":"This item isn't in the room"}
+    return {"status":"error","message":"Wrong room id"}
+
+@app.patch('/{idGame}/objets/interact/{itemID1}-{itemID2}')
+def interactObjs(idGame:str,itemID1:int ,itemID2:int):
+    if idGame in games:
+        for item in games[idGame].get_objects():
+            if item.id == itemID1:
+                if type(item)!=ObjetInteractif:
+                    return {"status":"error","message":"This object is not interactive"}
+                return item.utiliser(itemID2)
+        return {"status":"error","message":"This item isn't in the room"}
+    return {"status":"error","message":"Wrong room id"}

@@ -15,8 +15,7 @@ coffre_quantique = ObjetInteractif(
     nom="Coffre-Fort Quantique", 
     description="Coffre électronique sous le lit déverrouillable via schéma UV", 
     etat="Sous le lit",
-    estFerme=True, 
-    codeSerrure="Schéma UV"
+    useEffect="Le coffre s'ouvre et tu aperçoit : "
 )
 
 partition_holoclavier = Item(
@@ -40,7 +39,8 @@ drone_maintenance = Conteneur(
     description="Drone décoratif à trappe ouverte hébergeant la pile au lithium-cristal", 
     etat="Suspendu dans la cage d'escalier",
     estFerme=True, 
-    codeSerrure="Mécanique"
+    codeSerrure="Mécanique",
+    open="Vous obtenez une pile"
 )
 
 pile_lithium = Item(
@@ -62,8 +62,7 @@ terminal_decharge = ObjetInteractif(
     nom="Terminal de Décharge", 
     description="Écran/Interface murale qui accepte la pile + puce et valide le code du Sas", 
     etat="Près de la porte de sortie Immeuble",
-    estFerme=True, 
-    codeSerrure="84693"
+    useEffect="Il vous faut un code a 5 chiffre"
 )
 
 # --- ESPACE NEURO-VIRTUEL ---
@@ -72,8 +71,7 @@ analyseur_neuro_trauma = ObjetInteractif(
     nom="Analyseur de Neuro-Trauma", 
     description="Écran fixe + fente lectrice qui lit la bande magnétique et affiche le diagnostic d'ondes", 
     etat="Console centrale de simulation",
-    estFerme=False, 
-    codeSerrure=None
+    useEffect = "Vous débloquez"
 )
 
 module_bypass = ObjetInteractif(
@@ -81,8 +79,7 @@ module_bypass = ObjetInteractif(
     nom="Module de Bypass Cérébral", 
     description="Boîtier physique avec 3 interrupteurs bi-position permettant de basculer les canaux [A, B, C] sur 101", 
     etat="Au sol près du corps dans le coma",
-    estFerme=True, 
-    codeSerrure="101"
+    useEffect="il vous faut trois chiffre pour passer"
 )
 
 bande_donnees = Item(
@@ -97,8 +94,7 @@ porte_chambre = ObjetInteractif(
     nom="Porte de la Chambre", 
     description="Digicode électronique contrôlant la sortie du confinement initial", 
     etat="Armé",
-    estFerme=True, 
-    codeSerrure="7635"
+    useEffect="Il faut 4 chiffre pour passer"
 )
 
 sas_rez_de_chaussee = ObjetInteractif(
@@ -106,6 +102,5 @@ sas_rez_de_chaussee = ObjetInteractif(
     nom="Sas du Rez-de-Chaussée", 
     description="Porte de sortie de l'immeuble reliée au Terminal de Décharge", 
     etat="Verrouillé",
-    estFerme=True, 
-    codeSerrure="84693"
+    useEffect="Il faut 5 chiffre pour passer"
 )

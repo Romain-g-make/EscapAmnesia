@@ -36,3 +36,5 @@ class Salle:
         for objet in self.listObj:
             result.append(objet.getData())
         return result
+
+    
