@@ -18,8 +18,8 @@ games = {}
 def read_root():
     return {"status": "ok", "message": "Environnement Conda prêt pour l'Escape Game !"}
 
-@app.get("/start")
-def start():
+@app.post("/start")
+def start(session:SessionManagerCreate):
     mess = ""
     idG = str(uuid.uuid4())
     inventaire = Inventory(10)
