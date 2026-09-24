@@ -8,7 +8,6 @@ inventaire = Inventory(10)
 def read_root():
     return {"status": "ok", "message": "Environnement Conda prêt pour l'Escape Game !"}
 
-
 @app.get("/start")
 def start():
     mess = ""
