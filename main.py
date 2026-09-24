@@ -23,21 +23,24 @@ def read_root():
 @app.post("/start")
 def start(session : SessionManagerCreate):
     mess = ""
-    uuid = str(uuid.uuid4())
+    idG = str(uuid.uuid4())
     inventaire = Inventory(10)
     game = SessionManager(
-        inventory = inventaire,
-        **session.modeldump(),
+        etat=session.etat,
+        tempsRestant=session.temps_restant,
+        niveauActuel=session.niveau_actuel,
+        inventory=inventaire
         
     )
-    games[uuid]=game
-    return {"status": "ok", "message": mess,"id":uuid}
+    games[idG]=game
+    return {"status": "ok", "message": mess,"id":idG}
 
 @app.delete("/{idGame}")
 def deleteGame(idGame:str):
     if idGame in games:
         del games[idGame]
         return {"status":"ok"}
+    return {"status":"error","message":"Wrong room id"},404
 
 
 
@@ -47,20 +50,20 @@ def deleteGame(idGame:str):
 def get_data_room(idGame:str):
     if idGame in games:
         return games[idGame].get_data()
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
 
 @app.get('/{idGame}/indice')
 def getInd(idGame:str):
     if idGame in games:
         return games[idGame].get_hint()
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
     
 
 @app.patch('/{idGame}/tryescape/{code}')
 def tryEscape(idGame:str,code:int):
     if idGame in games:
         return games[idGame].levelChange(code)
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
 
 
 
@@ -70,19 +73,19 @@ def tryEscape(idGame:str,code:int):
 def addItem(idGame:str,itemId: int):
     if idGame in games:
         return games[idGame].inventory.addItem(itemId)
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
 
 @app.patch("/{idGame}/inventory/removeItem/{itemId}")
 def removeItem(idGame:str,itemId: int):
     if idGame in games:
         return games[idGame].inventory.removeItem(itemId)
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
 
 @app.get("/{idGame}/inventory/showInventory")
 def showInventory(idGame:str):
     if idGame in games:
         return games[idGame].inventory.showInventory()
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
 
 
 
@@ -92,7 +95,7 @@ def showInventory(idGame:str):
 def getObj(idGame:str):
     if idGame in games:
         return games[idGame].get_obj()
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
 
 @app.get('/{idGame}/objet/inspect/{itemId}')
 def getInspect(idGame:str,itemId:int):
@@ -101,7 +104,7 @@ def getInspect(idGame:str,itemId:int):
             if item.id == itemId:
                 return item.inspecter()
         return {"status":"error","message":"This item isn't in the room"}
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
 
 @app.patch('/{idGame}/objets/interact/{itemID1}-{itemID2}')
 def interactObjs(idGame:str,itemID1:int ,itemID2:int):
@@ -112,4 +115,4 @@ def interactObjs(idGame:str,itemID1:int ,itemID2:int):
                     return {"status":"error","message":"This object is not interactive"}
                 return item.utiliser(itemID2)
         return {"status":"error","message":"This item isn't in the room"}
-    return {"status":"error","message":"Wrong room id"}
+    return {"status":"error","message":"Wrong room id"},404
