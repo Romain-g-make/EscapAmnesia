@@ -84,8 +84,7 @@ class SessionManager:
     tempsRestant : int
     niveauActuel : Salle
     
-    def __init__(self, idSession, etat, tempsRestant, niveauActuel,inventory : Inventory):
-        self.idSession = idSession
+    def __init__(self, etat, tempsRestant, niveauActuel,inventory : Inventory):
         self.etat = etat
         self.dateDebut = datetime.date.today()
         self.tempsRestant = tempsRestant

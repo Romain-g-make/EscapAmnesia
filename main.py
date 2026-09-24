@@ -1,8 +1,15 @@
-import FastAPI
+from fastapi import FastAPI
 import uuid
 from app.SessionManager import SessionManager
 from app.Inventory import Inventory
 from app.ObjetInteractif import ObjetInteractif
+from pydantic import BaseModel
+
+class SessionManagerCreate(BaseModel):
+    etat : str
+    temps_restant : int
+    niveau_actuel : int
+
 
 app = FastAPI(title="EscapeEngine API Test")
 games = {}
@@ -12,34 +19,45 @@ def read_root():
     return {"status": "ok", "message": "Environnement Conda prêt pour l'Escape Game !"}
 
 
-#DEBUT DU JEU 
-
-@app.get("/start")
-def start():
+#GESTION JEU 
+@app.post("/start")
+def start(session : SessionManagerCreate):
     mess = ""
     uuid = str(uuid.uuid4())
     inventaire = Inventory(10)
-    game = SessionManager(1,"en_jeu",60,1,inventaire)
+    game = SessionManager(
+        inventory = inventaire,
+        **session.modeldump(),
+        
+    )
     games[uuid]=game
     return {"status": "ok", "message": mess,"id":uuid}
+
+@app.delete("/{idGame}")
+def deleteGame(idGame:str):
+    if idGame in games:
+        del games[idGame]
+        return {"status":"ok"}
+
+
 
 
 #GESTION SALLE
 @app.get("/{idGame}/room/get")
-def get_data_room(idGame:int):
+def get_data_room(idGame:str):
     if idGame in games:
         return games[idGame].get_data()
     return {"status":"error","message":"Wrong room id"}
 
 @app.get('/{idGame}/indice')
-def getInd(idGame:int):
+def getInd(idGame:str):
     if idGame in games:
         return games[idGame].get_hint()
     return {"status":"error","message":"Wrong room id"}
     
 
 @app.patch('/{idGame}/tryescape/{code}')
-def tryEscape(idGame:int,code:int):
+def tryEscape(idGame:str,code:int):
     if idGame in games:
         return games[idGame].levelChange(code)
     return {"status":"error","message":"Wrong room id"}
@@ -49,19 +67,19 @@ def tryEscape(idGame:int,code:int):
 
 #GESTION INVENTAIRE
 @app.patch("/{idGame}/inventory/addItem/{itemId}")
-def addItem(idGame:int,itemId: int):
+def addItem(idGame:str,itemId: int):
     if idGame in games:
         return games[idGame].inventory.addItem(itemId)
     return {"status":"error","message":"Wrong room id"}
 
 @app.patch("/{idGame}/inventory/removeItem/{itemId}")
-def removeItem(idGame:int,itemId: int):
+def removeItem(idGame:str,itemId: int):
     if idGame in games:
         return games[idGame].inventory.removeItem(itemId)
     return {"status":"error","message":"Wrong room id"}
 
 @app.get("/{idGame}/inventory/showInventory")
-def showInventory(idGame:int):
+def showInventory(idGame:str):
     if idGame in games:
         return games[idGame].inventory.showInventory()
     return {"status":"error","message":"Wrong room id"}
@@ -71,13 +89,13 @@ def showInventory(idGame:int):
 
 #OBJETS 
 @app.get('/{idGame}/objet/get')
-def getObj(idGame:int):
+def getObj(idGame:str):
     if idGame in games:
         return games[idGame].get_obj()
     return {"status":"error","message":"Wrong room id"}
 
 @app.get('/{idGame}/objet/inspect/{itemId}')
-def getInspect(idGame:int,itemId:int):
+def getInspect(idGame:str,itemId:int):
     if idGame in games:
         for item in games[idGame].get_objects():
             if item.id == itemId:
@@ -86,7 +104,7 @@ def getInspect(idGame:int,itemId:int):
     return {"status":"error","message":"Wrong room id"}
 
 @app.patch('/{idGame}/objets/interact/{itemID1}-{itemID2}')
-def interactObjs(idGame:int,itemID1:int ,itemID2:int):
+def interactObjs(idGame:str,itemID1:int ,itemID2:int):
     if idGame in games:
         for item in games[idGame].get_objects():
             if item.id == itemID1:
