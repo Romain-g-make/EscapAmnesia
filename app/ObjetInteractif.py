@@ -16,8 +16,12 @@ class ObjetInteractif(Item):
                 result[self.objs[i].id]=self.objs[i].getData()
         return result
 
-    def utiliser(self):
-        return {"effet":self.useEffect}
+    def utiliser(self,itemID:int):
+        for i in range (len(self.objs)):
+            if self.objs[i].id==itemID:
+                return {"effet":self.useEffect}
+        return {"status":"error", "message":"This item is not compatible"}
+        
 
 
     def getData(self):
