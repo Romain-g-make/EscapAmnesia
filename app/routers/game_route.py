@@ -1,22 +1,16 @@
-from fastapi import FastAPI
 import uuid
-from app.SessionManager import SessionManager
-from app.Inventory import Inventory
-from app.ObjetInteractif import ObjetInteractif
+from app.models.SessionManager import SessionManager
+from app.models.Inventory import Inventory
+from app.models.ObjetInteractif import ObjetInteractif
 from pydantic import BaseModel
+
+games = {}
 
 class SessionManagerCreate(BaseModel):
     etat : str
     temps_restant : int
     niveau_actuel : int
 
-
-app = FastAPI(title="EscapeEngine API Test")
-games = {}
-
-@app.get("/")
-def read_root():
-    return {"status": "ok", "message": "Environnement Conda prêt pour l'Escape Game !"}
 
 @app.post("/start")
 def start(session:SessionManagerCreate):

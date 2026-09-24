@@ -1,6 +1,6 @@
-from .Conteneur import Conteneur
-from .Item import Item
-from .ObjetInteractif import ObjetInteractif
+from ..models.Conteneur import Conteneur
+from ..models.Item import Item
+from ..models.ObjetInteractif import ObjetInteractif
 
 # --- INVENTAIRE & CHAMBRE ---
 injecteur_uv = Item(
