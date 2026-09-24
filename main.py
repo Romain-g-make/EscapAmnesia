@@ -10,6 +10,8 @@ def read_root():
     return {"status": "ok", "message": "Environnement Conda prêt pour l'Escape Game !"}
 
 
+#DEBUT DU JEU 
+
 @app.get("/start")
 def start():
     mess = ""
@@ -17,10 +19,24 @@ def start():
     game = SessionManager(1,"en_jeu",60,1)
     return {"status": "ok", "message": mess}
 
+
+#GESTION SALLE
 @app.get("/room/get")
 def get_data_room():
     return game.get_data()
 
+@app.get('/indice')
+def getInd():
+    return game.get_hint()
+
+@app.patch('/tryescape/{code}')
+def tryEscape(code:int):
+    return game.levelChange(code)
+
+
+
+
+#GESTION INVENTAIRE
 @app.patch("/inventory/addItem/{itemId}")
 def addItem(itemId: int):
     return inventaire.addItem(itemId)
@@ -33,14 +49,17 @@ def removeItem(itemId: int):
 def showInventory():
     return inventaire.showInventory()
 
+
+
+
+#OBJETS 
 @app.get('/objet/get')
 def getObj():
     return game.get_obj()
 
-@app.get('/indice')
-def getInd():
-    return game.get_hint()
-
-@app.get('/tryescape/{code}')
-def tryEscape(code:int):
-    return game.levelChange(code)
+@app.get('/objet/inspect/{itemId}')
+def getInspect(itemId:int):
+    for item in game.get_objects():
+        if item.id == itemId:
+            return item.inspecter()
+    return {"status":"error","message":"This item isn't in the room"}

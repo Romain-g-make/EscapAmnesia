@@ -128,3 +128,6 @@ class SessionManager:
 
     def get_hint(self):
         return self.niveauActuel.getHint()
+
+    def get_objects(self):
+        return self.niveauActuel.listObj
