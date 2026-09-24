@@ -16,8 +16,5 @@ class Item():
     def inspecter(self):
         return {"description":self.description}
 
-    def utiliser(self):
-        return print(f'Vout utilisez actuellement l\'item : {self.nom} !')
-
     def getData(self):
         return {"id":self.id,"nom":self.nom,"description":self.description}

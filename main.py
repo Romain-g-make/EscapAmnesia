@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.SessionManager import SessionManager
 from app.Inventory import Inventory
+from app.ObjetInteractif import ObjetInteractif
 
 app = FastAPI(title="EscapeEngine API Test")
 inventaire = Inventory(10)
@@ -62,4 +63,13 @@ def getInspect(itemId:int):
     for item in game.get_objects():
         if item.id == itemId:
             return item.inspecter()
+    return {"status":"error","message":"This item isn't in the room"}
+
+@app.patch('/objets/interact/{itemID1}-{itemID2}')
+def interactObjs(itemID1:int ,itemID2:int):
+    for item in game.get_objects():
+        if item.id == itemID1:
+            if type(item)!=ObjetInteractif:
+                return {"status":"error","message":"This object is not interactive"}
+            return item.utiliser(itemID2)
     return {"status":"error","message":"This item isn't in the room"}
