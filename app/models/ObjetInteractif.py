@@ -1,4 +1,7 @@
 from .Item import Item
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ObjetInteractif(Item):
     def __init__(self, id,nom,description,etat,useEffect,objs : list[Item] = None):
@@ -11,6 +14,7 @@ class ObjetInteractif(Item):
 
     def inspecter(self):
         result = {"description":self.description}
+        logger.info('Inspect the item ID %s in progress', self.id)
         if self.objs:
             for i in range (len(self.objs)):
                 result[self.objs[i].id]=self.objs[i].getData()
@@ -19,10 +23,11 @@ class ObjetInteractif(Item):
     def utiliser(self,itemID:int):
         for i in range (len(self.objs)):
             if self.objs[i].id==itemID:
+                logger.info('Using the item ID %s in progress', itemID)
                 return {"effet":self.useEffect}
-        return {"status":"error", "message":"This item is not compatible"}
-        
 
+        logger.error('Object %s isn\'t compatible', itemID)
+        return {"status":"error", "message":"This item is not compatible"}
 
     def getData(self):
         return {"id":self.id,"nom":self.nom,"description":self.description}

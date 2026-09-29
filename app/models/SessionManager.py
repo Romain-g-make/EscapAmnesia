@@ -7,6 +7,10 @@ from app.services.ItemsList import (
     analyseur_neuro_trauma, module_bypass, bande_donnees
 )
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class SessionManager:
 
     scenar1 = (
@@ -102,9 +106,12 @@ class SessionManager:
 
     def endGame(self, v: bool):
         if v:
+            logger.info('The player end the game')
             print("Bravo vous avez gagné en : ", datetime.date.today() - self.dateDebut)
 
     def levelChange(self, code: str):
+        logger.info('The player change the level')
+
         if self.niveauActuel.tryEscape(code):
             self.niveauActuel = self.nextLevel()
             return {"status": "true"}

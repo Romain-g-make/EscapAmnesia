@@ -1,4 +1,7 @@
 from abc import abstractmethod
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Item():
 
@@ -14,6 +17,7 @@ class Item():
     listItem.append(id)
 
     def inspecter(self):
+        logger.debug('Inspection of an item in progress')
         return {"description":self.description}
 
     def getData(self):
