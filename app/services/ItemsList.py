@@ -104,3 +104,5 @@ sas_rez_de_chaussee = ObjetInteractif(
     etat="Verrouillé",
     useEffect="Il faut 5 chiffre pour passer"
 )
+
+itemList = [injecteur_uv,coffre_quantique,partition_holoclavier,oculometre,drone_maintenance,pile_lithium,puce_dechiffrement,terminal_decharge,analyseur_neuro_trauma,module_bypass,bande_donnees,porte_chambre,sas_rez_de_chaussee]
