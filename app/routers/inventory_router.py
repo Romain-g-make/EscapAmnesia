@@ -24,7 +24,7 @@ def addItem(idGame:str,itemId: int):
             detail=f"La partie avec l'ID {idGame} n'existe pas."
         )
 
-@router_inventory.patch("/{idGame}/inventory/removeItem/{itemId}")
+@router_inventory.delete("/{idGame}/inventory/removeItem/{itemId}")
 def removeItem(idGame:str,itemId: int):
     logger.info("Search for the game %s",idGame)
     if idGame in games:
