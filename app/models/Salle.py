@@ -4,7 +4,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Salle:
-
     id : int
     name : str
     state : str

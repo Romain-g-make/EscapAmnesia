@@ -23,7 +23,6 @@ class Inventory(Item):
         else:
             logger.info('Add item with id %s in the player\'s inventory', itemId)
             self.inventory[itemId] = 1
-        
         return {"status":"ok"}
 
     def removeItem(self: object, itemId: int):

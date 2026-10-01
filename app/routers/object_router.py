@@ -27,7 +27,7 @@ def getInspect(idGame:str,itemId:int):
     if idGame in games:
         logger.info("Search for items in game")
         for item in games[idGame].get_objects():
-            if item.id == itemId:
+            if item.id == itemId and games[idGame].hasItem(itemId):
                 return item.inspecter()
         logger.warning("Item %s not found",itemId)
         raise HTTPException(
