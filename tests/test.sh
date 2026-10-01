@@ -2,7 +2,7 @@
 curl -X POST -H "Content-Type: application/json" -d '{"etat":"en_jeu","temps_restant":60,"niveau_actuel":1}' http://127.0.0.1:8000/start
 
 # Définir l'ID reçu de la commande précédente
-ID="COLLER_VOTRE_UUID_ICI"
+ID=$(curl -X POST -H "Content-Type: application/json" -d '{"etat":"en_jeu","temps_restant":60,"niveau_actuel":1}' http://127.0.0.1:8000/start)
 
 # 2. Objets et salle
 curl -X GET http://127.0.0.1:8000/$ID/room/get
