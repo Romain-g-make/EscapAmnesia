@@ -1,15 +1,15 @@
 import datetime
+import logging
 from .Salle import Salle
 from .Inventory import Inventory
-from app.services.ItemsList import (
+from ..services.ItemsList import (
     injecteur_uv, coffre_quantique, partition_holoclavier, oculometre, porte_chambre,
     drone_maintenance, pile_lithium, puce_dechiffrement, terminal_decharge, sas_rez_de_chaussee,
     analyseur_neuro_trauma, module_bypass, bande_donnees
 )
 
-import logging
-
 logger = logging.getLogger(__name__)
+
 
 class SessionManager:
 
@@ -24,13 +24,13 @@ class SessionManager:
         "Tu accèdes aux parties communes. La sortie au rez-de-chaussée est verrouillée par le Sas.\n"
         "Tu dois réalimenter et configurer le Terminal de Décharge mural pour ouvrir la porte."
     )
-    
+
     scenar3 = (
         "ZONE 3 - L'ACCIDENT / LA SAUVEGARDE (ESPACE NEURO-VIRTUEL)\n"
         "Un accident survient ! Ton corps bascule dans le coma. Une sauvegarde de ta conscience est active.\n"
         "Restaure ta séquence cérébrale en configurant les signaux d'ondes sur l'Analyseur."
     )
-    
+
     scenar4 = (
         "ZONE 4 - L'HÔPITAL (RÉVEIL FINAL)\n"
         "« Bonjour Etsilon, comment vas-tu ? » La séquence de réalignement est terminée.\n"
@@ -42,58 +42,52 @@ class SessionManager:
     indice3 = "Insère la bande de données dans l'analyseur pour lire les signaux A, B, C et aligne les 3 interrupteurs[cite: 1]."
     indice4 = "Séquence terminée[cite: 1]."
 
-    salle1 = Salle(
-        id=1,
-        name="Chambre",
-        state="en_jeu",
-        scenario=scenar1,
-        indice=indice1,
-        listObj=[injecteur_uv, coffre_quantique, partition_holoclavier, oculometre, porte_chambre],
-        exitCode="7635"
-    )
-
-    salle2 = Salle(
-        id=2,
-        name="Immeuble",
-        state="en_jeu",
-        scenario=scenar2,
-        indice=indice2,
-        listObj=[drone_maintenance, pile_lithium, puce_dechiffrement, terminal_decharge, sas_rez_de_chaussee],
-        exitCode="84693"
-    )
-
-    salle3 = Salle(
-        id=3,
-        name="Accident / Sauvegarde",
-        state="en_jeu",
-        scenario=scenar3,
-        indice=indice3,
-        listObj=[analyseur_neuro_trauma, module_bypass, bande_donnees],
-        exitCode="101"
-    )
-
-    salle4 = Salle(
-        id=4,
-        name="Hôpital",
-        state="en_jeu",
-        scenario=scenar4,
-        indice=indice4,
-        listObj=[],
-        exitCode=""
-    )
-
-    idSession : int
-    etat : str
-    dateDebut : datetime
-    tempsRestant : int
-    niveauActuel : Salle
-    
-    def __init__(self, etat, tempsRestant, niveauActuel,inventory : Inventory):
+    def __init__(self, etat, tempsRestant, niveauActuel, inventory: Inventory):
         self.etat = etat
         self.dateDebut = datetime.date.today()
         self.tempsRestant = tempsRestant
         self.inventory = inventory
-        
+
+        self.salle1 = Salle(
+            id=1,
+            name="Chambre",
+            state="en_jeu",
+            scenario=self.scenar1,
+            indice=self.indice1,
+            listObj=[injecteur_uv, coffre_quantique, partition_holoclavier, oculometre, porte_chambre],
+            exitCode="7635"
+        )
+
+        self.salle2 = Salle(
+            id=2,
+            name="Immeuble",
+            state="en_jeu",
+            scenario=self.scenar2,
+            indice=self.indice2,
+            listObj=[drone_maintenance, pile_lithium, puce_dechiffrement, terminal_decharge, sas_rez_de_chaussee],
+            exitCode="84693"
+        )
+
+        self.salle3 = Salle(
+            id=3,
+            name="Accident / Sauvegarde",
+            state="en_jeu",
+            scenario=self.scenar3,
+            indice=self.indice3,
+            listObj=[analyseur_neuro_trauma, module_bypass, bande_donnees],
+            exitCode="101"
+        )
+
+        self.salle4 = Salle(
+            id=4,
+            name="Hôpital",
+            state="en_jeu",
+            scenario=self.scenar4,
+            indice=self.indice4,
+            listObj=[],
+            exitCode=""
+        )
+
         match niveauActuel:
             case 1:
                 self.niveauActuel = self.salle1
@@ -118,15 +112,13 @@ class SessionManager:
         return {"status": "false"}
 
     def nextLevel(self):
-        match self.niveauActuel:
-            case self.salle1:
-                return self.salle2
-            case self.salle2:
-                return self.salle3
-            case self.salle3:
-                return self.salle4
-            case _:
-                return self.salle4
+        if self.niveauActuel.id == 1:
+            return self.salle2
+        elif self.niveauActuel.id == 2:
+            return self.salle3
+        elif self.niveauActuel.id == 3:
+            return self.salle4
+        return self.salle4
 
     def get_data(self):
         return self.niveauActuel.getInfo()

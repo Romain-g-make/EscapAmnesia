@@ -35,7 +35,7 @@ def getInd(idGame:str):
     
 
 @router_room.patch('/{idGame}/tryescape/{code}')
-def tryEscape(idGame:str,code:int):
+def tryEscape(idGame: str, code: str):
     logger.info("Search for the game %s",idGame)
     if idGame in games:
         return games[idGame].levelChange(code)

@@ -21,8 +21,8 @@ class Salle:
         self.listObj = listObj
         self.exitCode = exitCode
 
-    def tryEscape(self,codeP):
-        if codeP==self.exitCode:
+    def tryEscape(self, codeP):
+        if str(codeP) == str(self.exitCode):
             logger.info('The player try to escape of this room : %s', self.id)
             self.state = "fini"
             return True

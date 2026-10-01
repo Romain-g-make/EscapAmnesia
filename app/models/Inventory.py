@@ -1,49 +1,45 @@
 import logging
-from .Item import Item
 from app.services.ItemsList import itemList
 
 logger = logging.getLogger(__name__)
 
-class Inventory(Item):
-    inventory = {}
-    
-    def __init__(self: object, maxSlots: int):
+
+class Inventory:
+    def __init__(self, maxSlots: int = 10):
         self.maxSlots = maxSlots
+        self.inventory: dict[int, object] = {}
 
-    def getItemData(itemId: int):
-        return Item.getData()
-
-    def hasItem(self, itemId: int):
+    def hasItem(self, itemId: int) -> bool:
         logger.info("Search for the item ID %s in the inventory's player", itemId)
         return itemId in self.inventory
 
-    def addItem(self: object, itemId: int):
+    def addItem(self, itemId: int) -> dict:
         if self.hasItem(itemId):
-            return {"status":"error","cause":"You already have %s in your inventory", "item": itemId}
+            return {
+                "status": "error",
+                "cause": f"You already have {itemId} in your inventory",
+                "item": itemId
+            }
         else:
-            logger.info('Add item with id %s in the player\'s inventory', itemId)
-<<<<<<< HEAD
-            self.inventory[itemId] = 1
-=======
+            logger.info("Add item with id %s in the player's inventory", itemId)
             for item in itemList:
                 if item.id == itemId:
                     self.inventory[itemId] = item
                     break
->>>>>>> 83bec9232485bb1ce415961fd4e8b1d18e06905d
-        return {"status":"ok"}
+        return {"status": "ok"}
 
-    def removeItem(self: object, itemId: int):
+    def removeItem(self, itemId: int) -> dict:
         if self.hasItem(itemId):
-            logger.info('Remove item with id %s in the player\'s inventory', itemId)
+            logger.info("Remove item with id %s in the player's inventory", itemId)
             self.inventory.pop(itemId)
-            return {"status":"ok"}
+            return {"status": "ok"}
         else:
-            logger.error('Object isn\'t in the inventory')
-            return {"status":"error","cause":"Object isn't in the inventory"}
+            logger.error("Object isn't in the inventory")
+            return {"status": "error", "cause": "Object isn't in the inventory"}
 
-    def showInventory(self: object):
-        result = {'Voici la liste de vos items :':{}}
-        logger.info('Print of the inventory\'s item')
-        for itemId,item  in self.inventory.items():
-            result['Voici la liste de vos items :'][itemId] = item.getData()
+    def showInventory(self) -> dict:
+        result = {"Voici la liste de vos items :": {}}
+        logger.info("Print of the inventory's item")
+        for itemId, item in self.inventory.items():
+            result["Voici la liste de vos items :"][itemId] = item.getData()
         return result

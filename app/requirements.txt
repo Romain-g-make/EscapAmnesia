@@ -1,31 +1,5 @@
 agent-detector==2.0.0
-<<<<<<< HEAD
-annotated-doc @ file:///home/task_dESWrxUGRGqdx_0/croot/annotated-doc_1786359536122/work
-annotated-types @ file:///home/task_cprZgjTRSUOIT_0/croot/annotated-types_1783680958242/work
-anyio @ file:///home/task_177313440493866/croot/anyio_1773134429107/work
-archspec @ file:///home/task_178169990293130/croot/archspec_1781703373809/work
-boltons @ file:///work/buildout/croot/boltons_1759961370105/work
-brotlicffi @ file:///home/task_178644398037123/croot/brotlicffi_1786444028068/work
-build @ file:///home/task_TKckex5dTwm7q_0/croot/python-build_1784730476453/work
-certifi @ file:///home/task_A5sLR00KQxqQn_0/croot/certifi_1785412676510/work/certifi
-cffi @ file:///home/task_178669697485257/croot/cffi_1786697019433/work
-charset-normalizer @ file:///home/task_IT4CAeSZRPOb0_0/croot/charset-normalizer_1782917574135/work
-click @ file:///home/task_178117498000106/croot/click_1781176524504/work
-conda @ file:///home/task_178706903726458/croot/conda_1787069068103/work/conda-src
-conda-anaconda-telemetry @ file:///croot/conda-anaconda-telemetry_1755883788794/work
-conda-anaconda-tos @ file:///home/task_177023043372900/croot/conda-anaconda-tos_1770231074707/work
-conda-content-trust @ file:///home/task_177755414411075/croot/conda-content-trust_1777554193088/work
-conda-libmamba-solver @ file:///home/task_Cr-3rYb_Svu0h_0/croot/conda-libmamba-solver_1784135307254/work/src
-conda-lockfiles @ file:///home/task_PY-GlwKPQnOux_0/croot/conda-lockfiles_1783438322763/work
-conda-package-handling @ file:///home/task_178172947772168/croot/conda-package-handling_1781731240351/work
-conda-pypi @ file:///home/task_EFMr8AP4TKqfi_0/croot/conda-pypi_1783082586176/work
-conda-rattler-solver @ file:///home/task_178241387241570/croot/conda-rattler-solver_1782413911495/work
-conda-self @ file:///home/task_fOARk-guSrmnn_0/croot/conda-self_1784728626019/work
-conda_index @ file:///home/task_178223981619030/croot/conda-index_1782239850799/work
-conda_package_streaming @ file:///home/task_178173107304744/croot/conda-package-streaming_1781731221551/work
-cryptography @ file:///home/task_178714260354665/croot/cryptography-split_1787142634498/work
-=======
->>>>>>> 83bec9232485bb1ce415961fd4e8b1d18e06905d
+
 detect-installer==0.2.1
 dnspython==2.8.0
 email-validator==2.3.0

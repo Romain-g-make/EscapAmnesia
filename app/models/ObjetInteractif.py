@@ -20,14 +20,15 @@ class ObjetInteractif(Item):
                 result[self.objs[i].id]=self.objs[i].getData()
         return result
 
-    def utiliser(self,itemID:int):
-        for i in range (len(self.objs)):
-            if self.objs[i].id==itemID:
-                logger.info('Using the item ID %s in progress', itemID)
-                return {"effet":self.useEffect}
+    def utiliser(self, itemID: int):
+        if self.objs:
+            for obj in self.objs:
+                if obj.id == itemID:
+                    logger.info('Using the item ID %s in progress', itemID)
+                    return {"effet": self.useEffect}
 
         logger.error('Object %s isn\'t compatible', itemID)
-        return {"status":"error", "message":"This item is not compatible"}
+        return {"status": "error", "message": "This item is not compatible"}
 
     def getData(self):
         return {"id":self.id,"nom":self.nom,"description":self.description}
